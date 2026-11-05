@@ -1,0 +1,47 @@
+<mat-toolbar>
+  <img src="assets/images/logo.png" class="logo" [routerLink]="['/']">
+  <div class="toolbar-buttons">
+    <button mat-icon-button aria-label="Search">
+      <mat-icon>search</mat-icon>
+    </button>
+    <button mat-icon-button aria-label="Cart" [matBadge]="productsCartList().length" [matBadgeHidden]="!productsCartList().length" (click)="cartOpen = !cartOpen">
+      <mat-icon>shopping_cart</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+
+<div class="cart" [ngClass]="{'showCart': cartOpen}">
+  <section class="cart-header">
+    <p class="cart-title">Carrinho ({{productsCartList().length}})</p>
+    <button type="button" class="close-cart" (click)="cartOpen = !cartOpen" title="Fechar">x</button>
+  </section>
+  <section class="cart-body">
+    @for(product of productsCartList(); track product.id) {
+      <div class="product-on-cart">
+        <img 
+          mat-card-image 
+          [src]="product.image" 
+          alt="{{ product.title }}"
+          width="100px"
+        />
+        <div class="product-on-cart-details">
+          <p class="product-title">{{ product.title }}</p>
+          <p class="product-price">R${{ product.price }},00</p>
+        </div>
+        <button mat-icon-button class="btn-delete-product" title="Remover do carrinho">
+          <mat-icon class="delete-product">delete</mat-icon>
+        </button>
+      </div>
+    } @empty {
+      <div class="empty-cart">
+        <p>Carrinho vazio</p>
+      </div>
+    }
+  </section>
+  <section class="cart-footer">
+    <div class="cart-total">
+      <p>Valor total: R${{totalProductsPrice()}},00</p>
+    </div>
+    <button mat-raised-button color="primary" [disabled]="!productsCartList().length">FINALIZAR COMPRA</button>
+  </section>
+</div>
